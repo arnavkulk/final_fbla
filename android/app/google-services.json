@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "928550275862",
+    "project_id": "final-fbla",
+    "storage_bucket": "final-fbla.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928550275862:android:c7387b2469f3437b141e37",
+        "android_client_info": {
+          "package_name": "com.example.finalFbla"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928550275862-2ul3j9psactb549kc5hs8h84bt47hijl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCERM-eVe7rvTZgoTvpa5JZumKej25_jac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928550275862-2ul3j9psactb549kc5hs8h84bt47hijl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "928550275862-96vddbg6qmdh1h6d6lrg8iqefn6tkoc3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.finalFbla"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
