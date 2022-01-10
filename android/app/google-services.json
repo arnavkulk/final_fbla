@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:928550275862:android:c7387b2469f3437b141e37",
+        "mobilesdk_app_id": "1:928550275862:android:ac81440ff2d179c6141e37",
         "android_client_info": {
-          "package_name": "com.example.finalFbla"
+          "package_name": "com.example.final_fbla"
         }
       },
       "oauth_client": [
