@@ -44,6 +44,7 @@ dependencies:
   firebase_crashlytics: ^2.4.5
   firebase_dynamic_links: ^4.0.4
   beamer: ^1.2.0
+  provider: ^6.0.2
 
 dev_dependencies:
   flutter_test:

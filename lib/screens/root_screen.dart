@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// The first screen the user is taken to as soon as the open the app
 class RootScreen extends StatelessWidget {
   const RootScreen({Key? key}) : super(key: key);
 
@@ -7,7 +8,7 @@ class RootScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Root'),
+        title: const Text('Root'),
       ),
       body: Center(
         child: Column(
@@ -27,7 +28,7 @@ class RootScreen extends StatelessWidget {
         onPressed: () {},
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

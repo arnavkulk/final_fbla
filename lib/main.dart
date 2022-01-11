@@ -1,6 +1,7 @@
 import 'package:final_fbla/utils/beam_locations.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'utils/firebase_options.dart';
 import 'package:beamer/beamer.dart';
 
@@ -29,11 +30,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routeInformationParser: BeamerParser(),
-      routerDelegate: _routerDelegate,
-      debugShowCheckedModeBanner: false,
-      title: 'App',
+    return MultiProvider(
+      providers: [],
+      child: MaterialApp.router(
+        routeInformationParser: BeamerParser(),
+        routerDelegate: _routerDelegate,
+        debugShowCheckedModeBanner: false,
+        title: 'App',
+      ),
     );
   }
 }
