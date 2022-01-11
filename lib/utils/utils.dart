@@ -1,1 +1,1 @@
-//TODO export files
+export 'firebase_options.dart';
