@@ -1,3 +1,4 @@
+import 'package:final_fbla/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 // The first screen the user is taken to as soon as the open the app
@@ -8,7 +9,7 @@ class RootScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Root'),
+        title: const Text(AppConstants.title),
       ),
       body: Center(
         child: Column(

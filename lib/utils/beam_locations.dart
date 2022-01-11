@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:final_fbla/constants/constants.dart';
 import 'package:final_fbla/screens/root_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class RootLocation extends BeamLocation {
         key: ValueKey('root'),
         name: 'root',
         child: RootScreen(),
-        title: 'name',
+        title: AppConstants.title,
       ),
     ];
   }

@@ -1,3 +1,4 @@
+import 'package:final_fbla/constants/app_constants.dart';
 import 'package:final_fbla/utils/beam_locations.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         routeInformationParser: BeamerParser(),
         routerDelegate: _routerDelegate,
         debugShowCheckedModeBanner: false,
-        title: 'App',
+        title: AppConstants.title,
       ),
     );
   }
