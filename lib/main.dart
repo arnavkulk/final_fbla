@@ -1,4 +1,5 @@
 import 'package:final_fbla/constants/app_constants.dart';
+import 'package:final_fbla/providers/providers.dart';
 import 'package:final_fbla/utils/beam_locations.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,7 +33,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [],
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+        ),
+      ],
       child: MaterialApp.router(
         routeInformationParser: BeamerParser(),
         routerDelegate: _routerDelegate,
