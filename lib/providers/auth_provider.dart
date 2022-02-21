@@ -15,6 +15,8 @@ class AuthProvider extends ChangeNotifier {
 
   User? get user => _user;
   bool get isLoggedIn => _isLoggedIn;
+  bool get isAuthenticated =>
+      _isLoggedIn && _user != null ? _user!.emailVerified : false;
 
   void _init() {
     StreamSubscription sub = _auth.userChanges().listen((User? user) {

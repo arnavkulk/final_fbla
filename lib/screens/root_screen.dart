@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 // The first screen the user is taken to as soon as the open the app
 class RootScreen extends StatelessWidget {
+  static const String route = '/';
   const RootScreen({Key? key}) : super(key: key);
 
   @override

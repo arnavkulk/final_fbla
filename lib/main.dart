@@ -1,5 +1,8 @@
 import 'package:final_fbla/constants/app_constants.dart';
 import 'package:final_fbla/providers/providers.dart';
+import 'package:final_fbla/screens/onboarding/handle_verification.dart';
+import 'package:final_fbla/screens/onboarding/verify_email.dart';
+import 'package:final_fbla/services/setup_service.dart';
 import 'package:final_fbla/utils/beam_locations.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,10 +12,7 @@ import 'package:beamer/beamer.dart';
 
 // Runs the app
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await SetupService.setup();
   runApp(MyApp());
 }
 
@@ -25,8 +25,31 @@ class MyApp extends StatelessWidget {
     locationBuilder: BeamerLocationBuilder(
       beamLocations: [
         RootLocation(),
+        OnboardingLocation(),
+        HomeLocation(),
       ],
     ),
+    guards: [
+      BeamGuard(
+        pathPatterns: [
+          VerifyEmail.route,
+          HandleVerification.route,
+        ],
+        check: (
+          context,
+          location,
+        ) =>
+            Provider.of<AuthProvider>(context).isLoggedIn,
+      ),
+      BeamGuard(
+        pathPatterns: [/*TODO*/],
+        check: (
+          context,
+          location,
+        ) =>
+            Provider.of<AuthProvider>(context).isAuthenticated,
+      ),
+    ],
     initialPath: '/',
   );
   // This widget is the root of your application.

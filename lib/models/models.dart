@@ -1,5 +1,5 @@
 export 'class.dart';
-export 'my_user.dart';
+export 'user_model.dart';
 export 'room.dart';
 export 'usertype.dart';
 export 'location.dart';

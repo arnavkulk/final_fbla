@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_fbla/models/usertype.dart';
 
-class MyUser {
+class UserModel {
   final String id;
   String firstName, lastName;
   String email;
@@ -9,7 +9,7 @@ class MyUser {
   final String fcmToken;
   List<String> classIds;
 
-  MyUser({
+  UserModel({
     required this.id,
     required this.firstName,
     required this.lastName,
@@ -18,14 +18,24 @@ class MyUser {
     required this.classIds,
     required this.userType,
   });
+  static Map<String, dynamic> toFirestore(UserModel user) {
+    return UserModel.toJson(user);
+  }
 
-  factory MyUser.fromFirebase(DocumentSnapshot<MyUser> doc) {
-    MyUser? user = doc.data();
+  factory UserModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    if (!doc.exists || doc.data() == null) {
+      throw Exception('Document is null');
+    }
+    return UserModel.fromJson({'id': doc.id, ...doc.data()!});
+  }
+
+  factory UserModel.fromFirebase(DocumentSnapshot<UserModel> doc) {
+    UserModel? user = doc.data();
     if (user == null) {
       throw Exception('Document is null');
     }
 
-    return MyUser(
+    return UserModel(
       id: doc.id,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -36,8 +46,8 @@ class MyUser {
     );
   }
 
-  factory MyUser.fromJson(Map<String, dynamic> data) {
-    return MyUser(
+  factory UserModel.fromJson(Map<String, dynamic> data) {
+    return UserModel(
       id: data['id'] as String,
       firstName: data['firstName'] as String,
       lastName: data['lastName'] as String,
@@ -48,15 +58,15 @@ class MyUser {
     );
   }
 
-  Map<String, dynamic> toJson(MyUser object) {
+  static Map<String, dynamic> toJson(UserModel object) {
     return {
-      'id': id,
-      'firstName': firstName,
-      'lastName': lastName,
-      'email': email,
-      'fcmToken': fcmToken,
-      'classIds': classIds,
-      'userType': userType.value,
+      'id': object.id,
+      'firstName': object.firstName,
+      'lastName': object.lastName,
+      'email': object.email,
+      'fcmToken': object.fcmToken,
+      'classIds': object.classIds,
+      'userType': object.userType.value,
     };
   }
 }
