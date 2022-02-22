@@ -54,7 +54,8 @@ class UserModel {
       lastName: data['lastName'] as String,
       email: data['email'] as String,
       fcmToken: data['fcmToken'] as String,
-      classIds: data['classIds'].map((e) => e.toString()) as List<String>,
+      classIds: data['classIds'].map<String>((e) => e.toString()).toList()
+          as List<String>,
       userType: UserTypeUtils.fromString(data['userType']),
     );
   }

@@ -53,6 +53,7 @@ dependencies:
   share_plus_web: ^2.0.4
   flutter_dotenv: ^5.0.2
   flutter_native_splash: ^2.0.5
+  animate_do: ^2.1.0
 
 
 dev_dependencies:
