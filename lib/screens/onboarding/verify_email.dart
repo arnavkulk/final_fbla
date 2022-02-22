@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:beamer/src/beamer.dart';
+import 'package:final_fbla/providers/auth_provider.dart';
+import 'package:final_fbla/screens/screens.dart';
 import 'package:final_fbla/services/auth_service.dart';
 import 'package:final_fbla/widgets/screen.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +21,35 @@ class VerifyEmail extends StatefulWidget {
 class _VerifyEmailState extends State<VerifyEmail> {
   String _buttonText = "Resend Email";
   bool _isLoading = false;
-
+  Timer? _timer;
   @override
   void initState() {
     super.initState();
-    AuthService.sendVerificationEmail();
+    AuthService.currentUser?.sendEmailVerification();
+    Future(() async {
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) async {
+        await AuthService.currentUser?.reload();
+        if (AuthService.currentUser?.emailVerified ?? false) {
+          context.beamToNamed(HomeScreen.route);
+        }
+        timer.cancel();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+  }
+
+  void refresh() async {
+    await AuthService.currentUser?.reload();
+    if (AuthService.currentUser?.emailVerified ?? false) {
+      context.beamToNamed(HomeScreen.route);
+    }
   }
 
   Future<void> sendVerificationEmail() async {
@@ -28,7 +57,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
       _buttonText = "Sending Email";
       _isLoading = true;
     });
-    await AuthService.sendVerificationEmail();
+    await AuthService.currentUser?.sendEmailVerification();
     setState(() {
       _buttonText = "Email Sent";
       _isLoading = false;
@@ -86,6 +115,43 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
                   onPressed: () => sendVerificationEmail(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Refresh",
+                        style: TextStyle(
+                          color: Colors.green.shade700,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Visibility(
+                          child: CircularProgressIndicator(
+                            color: Colors.green.shade700,
+                            value: null,
+                          ),
+                          visible: _isLoading,
+                        ),
+                      ),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding: EdgeInsets.all(15),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: ElevatedButton(
+                  onPressed: () => refresh(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

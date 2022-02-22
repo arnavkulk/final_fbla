@@ -11,9 +11,9 @@ import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
   static const String route = '/register';
-  SignInMethod method;
+  final SignInMethod method;
 
-  Register({
+  const Register({
     Key? key,
     this.method = SignInMethod.EMAIL_PASSWORD,
   }) : super(key: key);

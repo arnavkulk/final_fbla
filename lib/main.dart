@@ -1,12 +1,15 @@
 import 'package:final_fbla/constants/app_constants.dart';
 import 'package:final_fbla/providers/providers.dart';
+import 'package:final_fbla/providers/user_provider.dart';
 import 'package:final_fbla/screens/onboarding/handle_verification.dart';
 import 'package:final_fbla/screens/onboarding/verify_email.dart';
+import 'package:final_fbla/services/auth_service.dart';
 import 'package:final_fbla/services/setup_service.dart';
 import 'package:final_fbla/utils/beam_locations.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'models/user_model.dart';
 import 'utils/firebase_options.dart';
 import 'package:beamer/beamer.dart';
 
@@ -30,25 +33,25 @@ class MyApp extends StatelessWidget {
       ],
     ),
     guards: [
-      BeamGuard(
-        pathPatterns: [
-          VerifyEmail.route,
-          HandleVerification.route,
-        ],
-        check: (
-          context,
-          location,
-        ) =>
-            Provider.of<AuthProvider>(context).isLoggedIn,
-      ),
-      BeamGuard(
-        pathPatterns: [/*TODO*/],
-        check: (
-          context,
-          location,
-        ) =>
-            Provider.of<AuthProvider>(context).isAuthenticated,
-      ),
+      // BeamGuard(
+      //   pathPatterns: [
+      //     VerifyEmail.route,
+      //     HandleVerification.route,
+      //   ],
+      //   check: (
+      //     context,
+      //     location,
+      //   ) =>
+      //       Provider.of<AuthProvider>(context).isLoggedIn,
+      // ),
+      // BeamGuard(
+      //   pathPatterns: [/*TODO*/],
+      //   check: (
+      //     context,
+      //     location,
+      //   ) =>
+      //       Provider.of<AuthProvider>(context).isAuthenticated,
+      // ),
     ],
     initialPath: '/',
   );
@@ -59,6 +62,20 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => AuthProvider(),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, UserProvider>(
+          create: (_) => UserProvider(),
+          update: (BuildContext context, AuthProvider authProvider,
+              UserProvider? userProvider) {
+            if (userProvider == null) {
+              return UserProvider();
+            }
+            if (authProvider.isLoggedIn) {
+              return userProvider..loadUser();
+            } else {
+              return userProvider..clear();
+            }
+          },
         ),
       ],
       child: MaterialApp.router(

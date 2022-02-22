@@ -6,6 +6,7 @@ import 'package:final_fbla/screens/onboarding/forgot_password.dart';
 import 'package:final_fbla/screens/onboarding/handle_verification.dart';
 import 'package:final_fbla/screens/onboarding/register.dart';
 import 'package:final_fbla/screens/onboarding/verify_email.dart';
+import 'package:final_fbla/screens/screens.dart';
 import 'package:final_fbla/services/auth_service.dart';
 import 'package:final_fbla/widgets/fancy_text_form_field.dart';
 import 'package:final_fbla/widgets/onboarding/social_button.dart';
@@ -20,6 +21,9 @@ import 'package:share_plus/share_plus.dart';
 
 class Login extends StatefulWidget {
   static const String route = '/login';
+
+  const Login({Key? key}) : super(key: key);
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -50,7 +54,7 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> signInWithFacebook(BuildContext context) async {
-    Navigator.pushNamed(context, '/');
+    context.beamToNamed(HomeScreen.route);
   }
 
   Future<void> signInWithGoogle(BuildContext context) async {
@@ -67,7 +71,7 @@ class _LoginState extends State<Login> {
       } else if (!AuthService.currentUser!.emailVerified) {
         context.beamToNamed(HandleVerification.route);
       } else {
-        Navigator.pushNamed(context, '/');
+        context.beamToNamed(HomeScreen.route);
       }
     } on FirebaseAuthException catch (error) {
       String message = "An error occurred. Try again later";
@@ -129,7 +133,7 @@ class _LoginState extends State<Login> {
       } else if (!AuthService.currentUser!.emailVerified) {
         context.beamToNamed(VerifyEmail.route);
       } else {
-        Navigator.pushNamed(context, '/');
+        context.beamToNamed(HomeScreen.route);
       }
     } on FirebaseAuthException catch (error) {
       String message = "An error occurred. Try again later";
@@ -443,9 +447,9 @@ class _LoginState extends State<Login> {
                   // Container(
                   //   padding: EdgeInsets.symmetric(horizontal: 10),
                   // ),
-                  SocialButton(
-                      onPressed: () => signInWithGoogle(context),
-                      icon: Image.asset('assets/google.jpg')),
+                  // SocialButton(
+                  //     onPressed: () => signInWithGoogle(context),
+                  //     icon: Image.asset('assets/google.jpg')),
                 ],
               ),
             ),

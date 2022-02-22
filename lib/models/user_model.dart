@@ -47,13 +47,14 @@ class UserModel {
   }
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
+    print('here');
     return UserModel(
       id: data['id'] as String,
       firstName: data['firstName'] as String,
       lastName: data['lastName'] as String,
       email: data['email'] as String,
       fcmToken: data['fcmToken'] as String,
-      classIds: data['classIds'] as List<String>,
+      classIds: data['classIds'].map((e) => e.toString()) as List<String>,
       userType: UserTypeUtils.fromString(data['userType']),
     );
   }

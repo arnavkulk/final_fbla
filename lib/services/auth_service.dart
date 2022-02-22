@@ -25,8 +25,8 @@ class AuthService {
 
   static User? get currentUser => _auth.currentUser;
 
-  static Future<UserModel> getUser(String uid) async {
-    if (uid.isEmpty) {
+  static Future<UserModel> getUser(String? uid) async {
+    if (uid == null || uid.isEmpty) {
       throw Exception("uid is null");
     }
     DocumentSnapshot<UserModel> res = await _usersCollection.doc(uid).get();
@@ -36,8 +36,8 @@ class AuthService {
     return res.data()!;
   }
 
-  static Stream<UserModel> streamUser(User? user) {
-    if (user == null) throw Exception('user is null');
+  static Stream<UserModel?> streamUser(User? user) {
+    if (user == null) return Stream.value(null);
     return _usersCollection
         .doc(user.uid)
         .snapshots()
@@ -124,8 +124,8 @@ class AuthService {
     await currentUser!.sendEmailVerification(
       ActionCodeSettings(
         url:
-            'https://mustangapp.page.link/handleverification?email=${currentUser!.email}',
-        dynamicLinkDomain: "mustangapp.page.link",
+            'https://finalfbla.page.link/handleVerification?email=${currentUser!.email}',
+        dynamicLinkDomain: "finalfbla.page.link",
         handleCodeInApp: true,
         androidPackageName: info.packageName,
         iOSBundleId: info.packageName,
@@ -140,8 +140,8 @@ class AuthService {
     await _auth.sendPasswordResetEmail(
       email: email,
       actionCodeSettings: ActionCodeSettings(
-        url: 'https://mustangapp.page.link/handleverification?email=${email}',
-        dynamicLinkDomain: "mustangapp.page.link",
+        url: 'https://finalfbla.page.link/handleverification?email=${email}',
+        dynamicLinkDomain: "finalfbla.page.link",
         handleCodeInApp: true,
         androidPackageName: info.packageName,
         iOSBundleId: info.packageName,

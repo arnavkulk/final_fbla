@@ -8,11 +8,12 @@ class SetupService {
   static Future<void> setup() async {
     WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
     await dotenv.load(fileName: ".env");
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    FlutterNativeSplash.remove();
+
     // await FirebaseFirestore.instance.enablePersistence();
   }
 }

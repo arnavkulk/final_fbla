@@ -15,9 +15,9 @@ class RootLocation extends BeamLocation<BeamState> {
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     return [
-      const BeamPage(
-        key: ValueKey(RootScreen.route),
-        name: RootScreen.route,
+      BeamPage(
+        key: const ValueKey('root'),
+        name: 'root',
         child: RootScreen(),
         title: AppConstants.title,
       ),
@@ -32,28 +32,33 @@ class OnboardingLocation extends BeamLocation<BeamState> {
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     List<BeamPage> pagesStack = <BeamPage>[];
-    if (state.routeInformation.location == null) {
-      return [];
-    }
-    String location = state.routeInformation.location!;
-    if (location.contains(Register.route)) {
-      Map<String, dynamic> args = super.data as Map<String, dynamic>;
+    List<String> location = state.uri.pathSegments;
+
+    if (location.contains(Register.route.replaceAll("/", ""))) {
+      SignInMethod method = SignInMethod.EMAIL_PASSWORD;
+      print(super.data);
+      if (super.data != null) {
+        Map<String, dynamic> args = super.data as Map<String, dynamic>;
+        if (args['method'] != null) {
+          method = args['method'] as SignInMethod;
+        }
+      }
       pagesStack.add(
         BeamPage(
           key: const ValueKey(Register.route),
           name: Register.route,
           type: BeamPageType.noTransition,
           child: Register(
-            method: args['method'] as SignInMethod,
+            method: method,
           ),
         ),
       );
     }
 
-    if (location.contains(Login.route)) {
+    if (location.contains(Login.route.replaceAll("/", ""))) {
       pagesStack.add(
-        BeamPage(
-          key: const ValueKey(Login.route),
+        const BeamPage(
+          key: ValueKey(Login.route),
           name: Login.route,
           type: BeamPageType.noTransition,
           child: Login(),
@@ -61,18 +66,7 @@ class OnboardingLocation extends BeamLocation<BeamState> {
       );
     }
 
-    if (location.contains(Login.route)) {
-      pagesStack.add(
-        BeamPage(
-          key: const ValueKey(Login.route),
-          name: Login.route,
-          type: BeamPageType.noTransition,
-          child: Login(),
-        ),
-      );
-    }
-
-    if (location.contains(HandleVerification.route)) {
+    if (location.contains(HandleVerification.route.replaceAll("/", ""))) {
       pagesStack.add(
         BeamPage(
           key: const ValueKey(HandleVerification.route),
@@ -85,7 +79,7 @@ class OnboardingLocation extends BeamLocation<BeamState> {
       );
     }
 
-    if (location.contains(VerifyEmail.route)) {
+    if (location.contains(VerifyEmail.route.replaceAll("/", ""))) {
       pagesStack.add(
         const BeamPage(
           key: ValueKey(VerifyEmail.route),
@@ -96,7 +90,7 @@ class OnboardingLocation extends BeamLocation<BeamState> {
       );
     }
 
-    if (location.contains(ForgotPassword.route)) {
+    if (location.contains(ForgotPassword.route.replaceAll("/", ""))) {
       pagesStack.add(
         const BeamPage(
           key: ValueKey(ForgotPassword.route),
