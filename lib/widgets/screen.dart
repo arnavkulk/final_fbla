@@ -15,14 +15,15 @@ class Screen extends StatelessWidget {
 
   Color? color;
   static NavDrawer drawer = NavDrawer();
+  static BottomNavBar bottomNavBar = BottomNavBar();
 
   Screen({
     Key? key,
     required this.child,
     this.title,
     this.headerButtons,
-    this.includeHeader = true,
-    this.includeBottomNav = false,
+    this.includeHeader = false,
+    this.includeBottomNav = true,
     this.left = true,
     this.right = true,
     this.top = true,
@@ -55,12 +56,8 @@ class Screen extends StatelessWidget {
           ),
         ),
       ),
-      drawer: drawer,
-      bottomNavigationBar: includeBottomNav
-          ? BottomNavBar(
-              context,
-            )
-          : null,
+      // drawer: drawer,
+      bottomNavigationBar: includeBottomNav ? bottomNavBar : null,
       resizeToAvoidBottomInset: false,
     );
   }

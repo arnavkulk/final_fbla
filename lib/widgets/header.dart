@@ -1,3 +1,5 @@
+import 'package:beamer/src/beamer.dart';
+import 'package:final_fbla/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'bottom_nav_bar.dart';
 
@@ -14,8 +16,7 @@ class Header extends AppBar {
                     child: IconButton(
                       icon: Icon(Icons.home),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/');
-                        BottomNavBar.setSelected('/');
+                        context.beamToNamed(HomeScreen.route);
                       },
                     ),
                   )

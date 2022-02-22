@@ -1,9 +1,27 @@
+import 'package:beamer/src/beamer.dart';
+import 'package:final_fbla/screens/calendar.dart';
+import 'package:final_fbla/screens/screens.dart';
 import 'package:flutter/material.dart';
 
-class BottomNavBar extends BottomNavigationBar {
-  static int _selectedIndex = 0;
+class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({Key? key}) : super(key: key);
 
-  static final routes = [];
+  @override
+  _BottomNavBarState createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  static int _selectedIndex = 0;
+  static final Key _bottomNavBarKey = UniqueKey();
+  static final routes = [
+    HomeScreen.route,
+    Calendar.route,
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   static void setSelected(String route) {
     _selectedIndex = routes.indexOf(route);
@@ -12,47 +30,45 @@ class BottomNavBar extends BottomNavigationBar {
   static int get selected => _selectedIndex;
   static String get selectedRoute => routes[_selectedIndex];
 
-  BottomNavBar(BuildContext context)
-      : super(
-          type: BottomNavigationBarType.fixed,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.calendar_today),
-            //   label: 'Calendar',
-            // ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              label: 'Scouter',
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.insert_chart_outlined), label: 'Analysis'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Data',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_tree),
-              label: 'Links',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard_outlined),
-              label: 'Data Collection Analysis',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.edit),
-              label: 'Draw',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.green,
-          onTap: (int index) {
-            _selectedIndex = index;
-            Navigator.of(context).pushNamed('/');
-            Navigator.of(context).pushReplacementNamed(routes[index]);
-          },
-        );
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      key: _bottomNavBarKey,
+      elevation: 0,
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Color(0xFFF0F0F0),
+      unselectedItemColor: Colors.grey,
+      selectedItemColor: Colors.black,
+      selectedIconTheme: IconThemeData(color: Colors.blueGrey[600]),
+      currentIndex: _selectedIndex,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          label: "",
+          icon: Icon(Icons.home),
+        ),
+        BottomNavigationBarItem(
+          label: "",
+          icon: Icon(Icons.insert_chart),
+        ),
+        BottomNavigationBarItem(
+          label: "",
+          icon: Icon(Icons.done),
+        ),
+        BottomNavigationBarItem(
+          label: "",
+          icon: Icon(Icons.calendar_today),
+        ),
+        BottomNavigationBarItem(
+          label: "",
+          icon: Icon(Icons.chat_bubble),
+        ),
+      ],
+      onTap: (int index) {
+        setState(() {
+          _selectedIndex = index;
+        });
+        context.beamToNamed(routes[index]);
+      },
+    );
+  }
 }

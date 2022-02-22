@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:final_fbla/constants/constants.dart';
+import 'package:final_fbla/screens/calendar.dart';
 import 'package:final_fbla/screens/home_screen.dart';
 import 'package:final_fbla/screens/onboarding/forgot_password.dart';
 import 'package:final_fbla/screens/onboarding/handle_verification.dart';
@@ -117,16 +118,35 @@ class OnboardingLocation extends BeamLocation<BeamState> {
 class HomeLocation extends BeamLocation<BeamState> {
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
-    return [
-      const BeamPage(
-        key: ValueKey(HomeScreen.route),
-        name: HomeScreen.route,
-        child: HomeScreen(),
-        title: AppConstants.title,
-      ),
-    ];
+    List<BeamPage> pagesStack = <BeamPage>[];
+    List<String> location = state.uri.pathSegments;
+
+    if (location.contains(HomeScreen.route.replaceAll("/", ""))) {
+      pagesStack.add(
+        const BeamPage(
+          key: ValueKey(HomeScreen.route),
+          name: HomeScreen.route,
+          type: BeamPageType.noTransition,
+          child: HomeScreen(),
+        ),
+      );
+    }
+    if (location.contains(Calendar.route.replaceAll("/", ""))) {
+      pagesStack.add(
+        const BeamPage(
+          key: ValueKey(Calendar.route),
+          name: Calendar.route,
+          type: BeamPageType.noTransition,
+          child: Calendar(),
+        ),
+      );
+    }
+    return pagesStack;
   }
 
   @override
-  List<Pattern> get pathPatterns => [HomeScreen.route];
+  List<Pattern> get pathPatterns => [
+        HomeScreen.route,
+        Calendar.route,
+      ];
 }

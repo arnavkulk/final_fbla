@@ -1,5 +1,6 @@
 import 'package:final_fbla/constants/constants.dart';
 import 'package:final_fbla/constants/style_constants.dart';
+import 'package:final_fbla/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 // The first screen the user is taken to as soon as the open the app
@@ -8,8 +9,10 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return Screen(
+      top: false,
+      bottom: false,
+      child: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
