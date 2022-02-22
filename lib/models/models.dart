@@ -4,3 +4,5 @@ export 'room.dart';
 export 'usertype.dart';
 export 'location.dart';
 export 'event.dart';
+export 'task.dart';
+export 'activity.dart';

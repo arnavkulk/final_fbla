@@ -104,13 +104,15 @@ class AuthService {
 
     await _usersCollection.doc(uid).set(
           UserModel(
-            id: uid,
+            id: "",
+            uid: uid,
             email: email,
             firstName: firstName,
             lastName: lastName,
             userType: UserType.STUDENT,
             fcmToken: "",
             classIds: [],
+            activityIds: [],
           ),
         );
   }

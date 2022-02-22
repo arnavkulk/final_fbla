@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:final_fbla/constants/constants.dart';
+import 'package:final_fbla/screens/activities.dart';
 import 'package:final_fbla/screens/calendar.dart';
 import 'package:final_fbla/screens/home_screen.dart';
 import 'package:final_fbla/screens/onboarding/forgot_password.dart';
@@ -141,6 +142,16 @@ class HomeLocation extends BeamLocation<BeamState> {
         ),
       );
     }
+    if (location.contains(Activities.route.replaceAll("/", ""))) {
+      pagesStack.add(
+        const BeamPage(
+          key: ValueKey(Activities.route),
+          name: Activities.route,
+          type: BeamPageType.noTransition,
+          child: Activities(),
+        ),
+      );
+    }
     return pagesStack;
   }
 
@@ -148,5 +159,6 @@ class HomeLocation extends BeamLocation<BeamState> {
   List<Pattern> get pathPatterns => [
         HomeScreen.route,
         Calendar.route,
+        Activities.route,
       ];
 }

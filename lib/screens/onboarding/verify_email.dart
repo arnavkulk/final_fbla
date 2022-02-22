@@ -5,7 +5,6 @@ import 'package:final_fbla/screens/screens.dart';
 import 'package:final_fbla/services/auth_service.dart';
 import 'package:final_fbla/widgets/screen.dart';
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
 import 'package:provider/provider.dart';
 
 class VerifyEmail extends StatefulWidget {
@@ -24,16 +23,16 @@ class _VerifyEmailState extends State<VerifyEmail> {
   @override
   void initState() {
     super.initState();
-    AuthService.currentUser?.sendEmailVerification();
-    Future(() async {
-      _timer = Timer.periodic(Duration(seconds: 1), (timer) async {
-        await AuthService.currentUser?.reload();
-        if (AuthService.currentUser?.emailVerified ?? false) {
-          context.beamToNamed(HomeScreen.route);
-        }
-        timer.cancel();
-      });
-    });
+    // AuthService.currentUser?.sendEmailVerification();
+    // Future(() async {
+    //   _timer = Timer.periodic(Duration(seconds: 1), (timer) async {
+    //     await AuthService.currentUser?.reload();
+    //     if (AuthService.currentUser?.emailVerified ?? false) {
+    //       context.beamToNamed(HomeScreen.route);
+    //     }
+    //     timer.cancel();
+    //   });
+    // });
   }
 
   @override
@@ -66,104 +65,127 @@ class _VerifyEmailState extends State<VerifyEmail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         body: SingleChildScrollView(
-          child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.green.shade400,
+                Colors.green.shade800,
+              ],
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 200,
+                height: 200,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                ),
+                child: Transform.rotate(
+                  angle: 38,
+                  child: Image(
+                    image: AssetImage('assets/email.png'),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                "Verification",
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Wrap(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                alignment: WrapAlignment.center,
                 children: [
-                  Container(
-                    width: 200,
-                    height: 200,
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      shape: BoxShape.circle,
+                  Text(
+                    "A verification email has been sent to ${Provider.of<AuthProvider>(context).user!.email}. Please follow the instructions in the email to verify your account, then return to the app.",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
                     ),
-                    child: Transform.rotate(
-                      angle: 38,
-                      child: Image(
-                        image: AssetImage('assets/email.png'),
-                      ),
-                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  FadeInDown(
-                      duration: Duration(milliseconds: 500),
-                      child: Text(
-                        "Verification",
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                      )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  FadeInDown(
-                    delay: Duration(milliseconds: 700),
-                    duration: Duration(milliseconds: 500),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't resive the OTP?",
-                          style: TextStyle(
-                              fontSize: 14, color: Colors.grey.shade500),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              if (_buttonText == "Sending Email") return;
-                              sendVerificationEmail();
-                            },
-                            child: Text(
-                              _buttonText,
-                              style: TextStyle(color: Colors.blueAccent),
-                            ))
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  FadeInDown(
-                    delay: Duration(milliseconds: 800),
-                    duration: Duration(milliseconds: 500),
-                    child: MaterialButton(
-                      elevation: 0,
-                      onPressed: () => refresh(),
-                      color: Colors.orange.shade400,
-                      minWidth: MediaQuery.of(context).size.width * 0.8,
-                      height: 50,
-                      child: _isLoading
-                          ? Container(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                backgroundColor: Colors.white,
-                                strokeWidth: 3,
-                                color: Colors.black,
-                              ),
-                            )
-                          : Provider.of<AuthProvider>(context).emailVerified
-                              ? Icon(
-                                  Icons.check_circle,
-                                  color: Colors.white,
-                                  size: 30,
-                                )
-                              : Text(
-                                  "Verify",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                    ),
-                  )
                 ],
-              )),
-        ));
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Didn't receive an email?",
+                    style: TextStyle(fontSize: 14, color: Colors.white),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        if (_buttonText == "Sending Email") return;
+                        sendVerificationEmail();
+                      },
+                      child: Text(
+                        _buttonText,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ))
+                ],
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              MaterialButton(
+                elevation: 0,
+                onPressed: () => refresh(),
+                color: Colors.white,
+                minWidth: MediaQuery.of(context).size.width * 0.8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                height: 50,
+                child: _isLoading
+                    ? Container(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                          strokeWidth: 3,
+                          color: Colors.green.shade400,
+                        ),
+                      )
+                    : Provider.of<AuthProvider>(context).emailVerified
+                        ? Icon(
+                            Icons.check_circle,
+                            color: Colors.green.shade400,
+                            size: 30,
+                          )
+                        : Text(
+                            "Verify",
+                            style: TextStyle(color: Colors.green.shade400),
+                          ),
+              ),
+            ],
+          )),
+    ));
     return Screen(
       left: false,
       right: false,

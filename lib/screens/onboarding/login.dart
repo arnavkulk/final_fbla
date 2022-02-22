@@ -8,7 +8,9 @@ import 'package:final_fbla/screens/onboarding/register.dart';
 import 'package:final_fbla/screens/onboarding/verify_email.dart';
 import 'package:final_fbla/screens/screens.dart';
 import 'package:final_fbla/services/auth_service.dart';
+import 'package:final_fbla/widgets/button.dart';
 import 'package:final_fbla/widgets/fancy_text_form_field.dart';
+import 'package:final_fbla/widgets/header_container.dart';
 import 'package:final_fbla/widgets/onboarding/social_button.dart';
 import 'package:final_fbla/widgets/screen.dart';
 import 'package:flutter/material.dart';
@@ -285,6 +287,83 @@ class _LoginState extends State<Login> {
       },
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   Color orangeColors = Color(0xffF5591F);
+  //   Color orangeLightColors = Color(0xffF2861E);
+  //   return Screen(
+  //     top: false,
+  //     bottom: false,
+  //     includeBottomNav: false,
+  //     child: Container(
+  //       padding: EdgeInsets.only(bottom: 30),
+  //       child: Column(
+  //         children: <Widget>[
+  //           HeaderContainer("Login"),
+  //           Expanded(
+  //             flex: 1,
+  //             child: Container(
+  //               margin: EdgeInsets.only(left: 20, right: 20, top: 30),
+  //               child: Column(
+  //                 mainAxisSize: MainAxisSize.max,
+  //                 children: <Widget>[
+  //                   _textInput(hint: "Email", icon: Icons.email),
+  //                   _textInput(hint: "Password", icon: Icons.vpn_key),
+  //                   Container(
+  //                     margin: EdgeInsets.only(top: 10),
+  //                     alignment: Alignment.centerRight,
+  //                     child: Text(
+  //                       "Forgot Password?",
+  //                     ),
+  //                   ),
+  //                   Expanded(
+  //                     child: Center(
+  //                       child: ButtonWidget(
+  //                         onClick: () {},
+  //                         btnText: "LOGIN",
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   RichText(
+  //                     text: TextSpan(children: [
+  //                       TextSpan(
+  //                           text: "Don't have an account ? ",
+  //                           style: TextStyle(color: Colors.black)),
+  //                       TextSpan(
+  //                           text: "Registor",
+  //                           style: TextStyle(color: orangeColors)),
+  //                     ]),
+  //                   )
+  //                 ],
+  //               ),
+  //             ),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // Widget _textInput({controller, hint, icon}) {
+  //   return Container(
+  //     margin: EdgeInsets.only(top: 10),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.all(Radius.circular(20)),
+  //       color: Colors.white,
+  //     ),
+  //     padding: EdgeInsets.only(left: 10),
+  //     child: TextFormField(
+  //       controller: controller,
+  //       decoration: InputDecoration(
+  //         border: InputBorder.none,
+  //         hintText: hint,
+  //         prefixIcon: Icon(icon),
+  //       ),
+  //     ),
+  //   );
+  // }
+// }
 
   @override
   Widget build(BuildContext context) {

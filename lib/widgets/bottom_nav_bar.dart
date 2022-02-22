@@ -1,4 +1,5 @@
 import 'package:beamer/src/beamer.dart';
+import 'package:final_fbla/screens/activities.dart';
 import 'package:final_fbla/screens/calendar.dart';
 import 'package:final_fbla/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   static final routes = [
     HomeScreen.route,
     Calendar.route,
+    Activities.route,
   ];
 
   @override
