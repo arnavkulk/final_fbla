@@ -15,7 +15,7 @@ class ActivityProvider extends ChangeNotifier {
   List<Activity> get activities => _activities;
   List<StreamSubscription> _subscriptions = [];
 
-  void setUpStream(List<String> activityIds) async {
+  void setUpStream() async {
     print('start');
     StreamSubscription sub = Collections.activitiesCollection
         // .where(FieldPath.documentId, whereIn: activityIds)
@@ -23,6 +23,7 @@ class ActivityProvider extends ChangeNotifier {
         .listen((snapshot) {
       print('listen');
       _activities = snapshot.docs.map((e) => e.data()).toList();
+
       notifyListeners();
     });
     _subscriptions.add(sub);
@@ -34,14 +35,14 @@ class ActivityProvider extends ChangeNotifier {
     });
   }
 
-  void loadActivities(List<String> activityIds) async {
+  void loadActivities() async {
     if (_auth.currentUser == null) {
       clear();
       return;
     }
     try {
-      _activities = await ActivityService.getActivities(activityIds);
-      setUpStream(activityIds);
+      _activities = await ActivityService.getActivities();
+      setUpStream();
     } catch (e) {
       print(e);
     }

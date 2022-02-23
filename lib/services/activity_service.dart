@@ -8,10 +8,7 @@ class ActivityService {
   static final CollectionReference<Activity> _activitiesCollection =
       Collections.activitiesCollection;
 
-  static Future<List<Activity>> getActivities(List<String> classIds) async {
-    if (classIds.isEmpty) {
-      return [];
-    }
+  static Future<List<Activity>> getActivities() async {
     QuerySnapshot<Activity> res = await _activitiesCollection
         // .where(FieldPath.documentId, whereIn: classIds)
         .get();
@@ -21,7 +18,7 @@ class ActivityService {
 
   static Stream<List<Activity>> streamActivities(List<String> activityIds) {
     return _activitiesCollection
-        .where(FieldPath.documentId, whereIn: activityIds)
+        // .where(FieldPath.documentId, whereIn: activityIds)
         .snapshots()
         .map((event) => event.docs.map((e) => e.data()).toList());
   }

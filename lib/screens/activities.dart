@@ -57,7 +57,7 @@ class _ActivitiesState extends State<Activities> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     ActivityProvider activityProvider = Provider.of<ActivityProvider>(context);
-
+    print(activityProvider.activities.length);
     Activity? activityOfTheDay = activityProvider.activities.length > 0
         ? activityProvider.activities[0]
         : null;
@@ -204,11 +204,11 @@ class _ActivitiesState extends State<Activities> {
             ),
           ),
           Positioned(
-            right: 0,
-            top: 0,
+            right: 10,
+            top: 10,
             child: Image.asset(
               activity.image,
-              width: size.width * .37,
+              width: size.width * .6,
             ),
           ),
           Positioned(
@@ -320,9 +320,13 @@ class ActivityCard extends StatelessWidget {
               ),
             ),
           ),
-          Image.asset(
-            activity.image,
-            width: 150,
+          Positioned(
+            left: 0,
+            top: 20,
+            child: Image.asset(
+              activity.image,
+              width: 150,
+            ),
           ),
           Positioned(
             top: 35,
@@ -338,7 +342,7 @@ class ActivityCard extends StatelessWidget {
                 SizedBox(
                   height: 40,
                 ),
-                BookRating(score: activity.members.length),
+                BookRating(score: activity.members),
               ],
             ),
           ),
@@ -397,13 +401,17 @@ class ActivityCard extends StatelessWidget {
                                     listen: false)
                                 .user!
                                 .uid;
-                            if (Provider.of<UserProvider>(context,
+                            if (!Provider.of<UserProvider>(context,
                                     listen: false)
                                 .user!
                                 .activityIds
                                 .contains(activity.id)) {
+                              print('add');
+
                               UserService.addActivity(uid, activity.id);
                             } else {
+                              print('remove');
+
                               UserService.removeActivity(uid, activity.id);
                             }
                           },

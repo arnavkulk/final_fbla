@@ -122,13 +122,8 @@ class MyApp extends StatelessWidget {
             if (activityProvider == null) {
               return ActivityProvider();
             }
-            List<String> activityIds = userProvider.user?.activityIds ?? [];
 
-            if (!ListEquality().equals(activityIds,
-                activityProvider.activities.map((e) => e.id).toList())) {
-              return activityProvider..loadActivities(activityIds);
-            }
-            return activityProvider;
+            return activityProvider..loadActivities();
           },
         ),
       ],
