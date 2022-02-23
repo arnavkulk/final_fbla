@@ -3,6 +3,7 @@ import 'package:final_fbla/constants/constants.dart';
 import 'package:final_fbla/screens/activities.dart';
 import 'package:final_fbla/screens/add_class.dart';
 import 'package:final_fbla/screens/calendar.dart';
+import 'package:final_fbla/screens/food.dart';
 import 'package:final_fbla/screens/home_screen.dart';
 import 'package:final_fbla/screens/onboarding/forgot_password.dart';
 import 'package:final_fbla/screens/onboarding/handle_verification.dart';
@@ -164,6 +165,16 @@ class HomeLocation extends BeamLocation<BeamState> {
         ),
       );
     }
+    if (location.contains(Food.route.replaceAll("/", ""))) {
+      pagesStack.add(
+        const BeamPage(
+          key: ValueKey(Food.route),
+          name: Food.route,
+          type: BeamPageType.noTransition,
+          child: Food(),
+        ),
+      );
+    }
     return pagesStack;
   }
 
@@ -173,5 +184,6 @@ class HomeLocation extends BeamLocation<BeamState> {
         Calendar.route,
         Activities.route,
         AddClass.route,
+        Food.route,
       ];
 }
