@@ -39,9 +39,6 @@ class _ContactState extends State<Contact> {
       body: _body.text,
       subject: _subject.text,
       recipients: [_recipient.text],
-      // cc: ['cc@example.com'],
-      // bcc: ['bcc@example.com'],
-      // attachmentPaths: ['/path/to/attachment.zip'],
       isHTML: false,
     );
 
