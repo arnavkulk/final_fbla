@@ -39,6 +39,9 @@ class _FoodState extends State<Food> {
                   type: title,
                 ),
               ),
+              SizedBox(
+                width: 20,
+              )
             ],
           ),
         ),

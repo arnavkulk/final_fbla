@@ -12,8 +12,10 @@ class TaskService {
     if (classIds.isEmpty) {
       return [];
     }
-    QuerySnapshot<Task> res =
-        await _tasksCollection.where('classId', whereIn: classIds).get();
+    QuerySnapshot<Task> res = await _tasksCollection
+        .where('classId', whereIn: classIds)
+        .orderBy('deadline')
+        .get();
 
     return res.docs.map((e) => e.data()).toList();
   }

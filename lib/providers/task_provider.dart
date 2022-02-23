@@ -16,10 +16,11 @@ class TaskProvider extends ChangeNotifier {
   void setUpStream(List<String> classIds) async {
     print('start');
     StreamSubscription sub = Collections.tasksCollection
-        .where(FieldPath.documentId, whereIn: classIds)
+        .orderBy('deadline')
+        // .where('classId', whereIn: classIds)
         .snapshots()
         .listen((snapshot) {
-      print('listen');
+      print('listen: ${snapshot.docs.length}');
       _tasks = snapshot.docs.map((e) => e.data()).toList();
       notifyListeners();
     });

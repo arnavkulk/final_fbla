@@ -14,11 +14,8 @@ class UserProvider extends ChangeNotifier {
   List<StreamSubscription> _subscriptions = [];
 
   void setUpStream(String uid) async {
-    print('start');
     StreamSubscription sub =
         Collections.usersCollection.doc(uid).snapshots().listen((snapshot) {
-      print('listen: ${snapshot.data()?.activityIds}');
-
       _user = snapshot.data();
       notifyListeners();
     });

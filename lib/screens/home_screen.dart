@@ -2,8 +2,10 @@ import 'package:beamer/src/beamer.dart';
 import 'package:final_fbla/constants/constants.dart';
 import 'package:final_fbla/constants/style_constants.dart';
 import 'package:final_fbla/models/class.dart';
+import 'package:final_fbla/models/task.dart';
 import 'package:final_fbla/providers/auth_provider.dart';
 import 'package:final_fbla/providers/class_provider.dart';
+import 'package:final_fbla/providers/task_provider.dart';
 import 'package:final_fbla/providers/user_provider.dart';
 import 'package:final_fbla/screens/add_class.dart';
 import 'package:final_fbla/screens/screens.dart';
@@ -86,8 +88,11 @@ class HomeScreen extends StatelessWidget {
                         ],
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(
-                              "https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80"),
+                          image: NetworkImage(Provider.of<AuthProvider>(context)
+                                  .user
+                                  ?.photoURL ??
+                              ""),
+                          // "https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80"),
                         ),
                       ),
                     ),
@@ -134,12 +139,12 @@ class HomeScreen extends StatelessWidget {
               ),
               child: ListView(
                 children: [
-                  buildTitleRow("TODAY's CLASSES ", todaysClasses.length,
+                  buildTitleRow("TODAY'S CLASSES ", todaysClasses.length,
                       () => context.beamToNamed(AddClass.route)),
                   SizedBox(
                     height: 20,
                   ),
-                  if (classProvider.classes.isEmpty)
+                  if (todaysClasses.isEmpty)
                     Container(
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 40),
@@ -157,7 +162,8 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(
                     height: 25,
                   ),
-                  buildTitleRow("YOUR TASKS", 4, () {}),
+                  buildTitleRow("YOUR TASKS ",
+                      Provider.of<TaskProvider>(context).tasks.length, () {}),
                   SizedBox(
                     height: 20,
                   ),
@@ -165,15 +171,36 @@ class HomeScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        buildTaskItem(
-                            3, "The Basic of Typography II", Colors.red),
-                        buildTaskItem(3, "Design Psychology: Principle of...",
-                            Colors.green),
-                        buildTaskItem(3, "Design Psychology: Principle of...",
-                            Colors.green),
+                        if (Provider.of<TaskProvider>(context).tasks.length ==
+                            0)
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 40),
+                            child: Center(
+                              child: Text(
+                                "No tasks left!",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                            ),
+                          ),
+                        ...Provider.of<TaskProvider>(context)
+                            .tasks
+                            .map((task) => buildTaskItem(task))
+                            .toList(),
+                        // buildTaskItem(
+                        //     3, "The Basic of Typography II", Colors.red),
+                        // buildTaskItem(3, "Design Psychology: Principle of...",
+                        //     Colors.green),
+                        // buildTaskItem(3, "Design Psychology: Principle of...",
+                        //     Colors.green),
                       ],
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 130,
+                  ),
                 ],
               ),
             ),
@@ -183,7 +210,10 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Container buildTaskItem(int numDays, String courseTitle, Color color) {
+  Container buildTaskItem(Task task) {
+    Color color = (task.deadline.toDate().difference(DateTime.now()).inDays < 3
+        ? Colors.red
+        : Colors.green);
     return Container(
       margin: EdgeInsets.only(right: 15),
       padding: EdgeInsets.all(12),
@@ -221,7 +251,7 @@ class HomeScreen extends StatelessWidget {
                 width: 5,
               ),
               Text(
-                "$numDays days left",
+                "${task.deadline.toDate().difference(DateTime.now()).inDays} days left",
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
@@ -236,7 +266,7 @@ class HomeScreen extends StatelessWidget {
           SizedBox(
             width: 100,
             child: Text(
-              courseTitle,
+              task.name,
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -365,16 +395,10 @@ class HomeScreen extends StatelessWidget {
               ),
               Row(
                 children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.green.shade600,
-                    child: Center(
-                      child: Icon(
-                        Icons.person,
-                        size: 17,
-                        color: Colors.white,
-                      ),
-                    ),
-                    radius: 10,
+                  Icon(
+                    Icons.person,
+                    color: Colors.grey,
+                    size: 20,
                   ),
                   SizedBox(
                     width: 5,
