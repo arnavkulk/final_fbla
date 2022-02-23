@@ -17,8 +17,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   static final Key _bottomNavBarKey = UniqueKey();
   static final routes = [
     HomeScreen.route,
-    Calendar.route,
     Activities.route,
+    Calendar.route,
     Food.route,
   ];
 
@@ -36,43 +36,49 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      key: _bottomNavBarKey,
-      elevation: 0,
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Color(0xFFF0F0F0),
-      unselectedItemColor: Colors.grey,
-      selectedItemColor: Colors.black,
-      selectedIconTheme: IconThemeData(color: Colors.blueGrey[600]),
-      currentIndex: _selectedIndex,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          label: "",
-          icon: Icon(Icons.home),
-        ),
-        BottomNavigationBarItem(
-          label: "",
-          icon: Icon(Icons.insert_chart),
-        ),
-        BottomNavigationBarItem(
-          label: "",
-          icon: Icon(Icons.done),
-        ),
-        BottomNavigationBarItem(
-          label: "",
-          icon: Icon(Icons.calendar_today),
-        ),
-        BottomNavigationBarItem(
-          label: "",
-          icon: Icon(Icons.chat_bubble),
-        ),
-      ],
-      onTap: (int index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-        context.beamToNamed(routes[index]);
-      },
+    return Container(
+      padding: EdgeInsets.only(top: 10),
+      color: Colors.green.shade600,
+      child: BottomNavigationBar(
+        key: _bottomNavBarKey,
+        elevation: 0,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.green.shade600,
+        unselectedItemColor: Colors.white70,
+        selectedItemColor: Colors.white,
+        selectedIconTheme: IconThemeData(color: Colors.white),
+        currentIndex: _selectedIndex,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            label: "",
+            icon: Icon(
+              Icons.home,
+            ),
+          ),
+          BottomNavigationBarItem(
+            label: "",
+            icon: Icon(Icons.local_activity),
+          ),
+          BottomNavigationBarItem(
+            label: "",
+            icon: Icon(Icons.calendar_today),
+          ),
+          BottomNavigationBarItem(
+            label: "",
+            icon: Icon(Icons.restaurant),
+          ),
+          BottomNavigationBarItem(
+            label: "",
+            icon: Icon(Icons.chat_bubble),
+          ),
+        ],
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+          context.beamToNamed(routes[index]);
+        },
+      ),
     );
   }
 }
