@@ -1,14 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_fbla/constants/app_constants.dart';
+import 'package:final_fbla/providers/class_provider.dart';
 import 'package:final_fbla/providers/providers.dart';
 import 'package:final_fbla/providers/user_provider.dart';
 import 'package:final_fbla/screens/onboarding/handle_verification.dart';
 import 'package:final_fbla/screens/onboarding/verify_email.dart';
 import 'package:final_fbla/services/auth_service.dart';
+import 'package:final_fbla/services/class_service.dart';
 import 'package:final_fbla/services/setup_service.dart';
 import 'package:final_fbla/utils/beam_locations.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'models/class.dart';
 import 'models/user_model.dart';
 import 'utils/firebase_options.dart';
 import 'package:beamer/beamer.dart';
@@ -77,6 +81,22 @@ class MyApp extends StatelessWidget {
             }
           },
         ),
+        ChangeNotifierProxyProvider<UserProvider, ClassProvider>(
+          create: (context) => ClassProvider(),
+          update: (BuildContext context, UserProvider userProvider,
+              ClassProvider? classProvider) {
+            if (classProvider == null) {
+              return ClassProvider();
+            }
+            List<String> classIds = userProvider.user?.classIds ?? [];
+
+            if (!ListEquality().equals(
+                classIds, classProvider.classes.map((e) => e.id).toList())) {
+              return classProvider..loadClasses(classIds);
+            }
+            return classProvider;
+          },
+        )
       ],
       child: MaterialApp.router(
         routeInformationParser: BeamerParser(),

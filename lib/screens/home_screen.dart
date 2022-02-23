@@ -1,7 +1,14 @@
 import 'package:final_fbla/constants/constants.dart';
 import 'package:final_fbla/constants/style_constants.dart';
+import 'package:final_fbla/models/class.dart';
+import 'package:final_fbla/providers/auth_provider.dart';
+import 'package:final_fbla/providers/class_provider.dart';
+import 'package:final_fbla/providers/user_provider.dart';
+import 'package:final_fbla/utils/date_time.dart';
 import 'package:final_fbla/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 // The first screen the user is taken to as soon as the open the app
 class HomeScreen extends StatelessWidget {
@@ -9,6 +16,10 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+    ClassProvider classProvider = Provider.of<ClassProvider>(context);
+    var res = DateTimeUtils.periodToTimestamp();
+    print(classProvider.classes);
     return Screen(
       top: false,
       bottom: false,
@@ -19,8 +30,8 @@ class HomeScreen extends StatelessWidget {
                 //color: Color(0xFFD4E7FE),
                 gradient: LinearGradient(
                     colors: [
-                      Color(0xFFD4E7FE),
-                      Color(0xFFF0F0F0),
+                      Colors.green.shade400,
+                      Colors.green.shade800,
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -32,16 +43,17 @@ class HomeScreen extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: RichText(
                     text: TextSpan(
-                        text: "Wed",
+                        text: DateFormat.E().format(DateTime.now()),
                         style: TextStyle(
-                            color: Color(0XFF263064),
+                            color: Colors.white,
                             fontSize: 12,
                             fontWeight: FontWeight.w900),
                         children: [
                           TextSpan(
-                            text: " 10 Oct",
+                            text:
+                                " ${DateTime.now().day} ${DateFormat.MMM().format(DateTime.now())}",
                             style: TextStyle(
-                                color: Color(0XFF263064),
+                                color: Colors.white,
                                 fontSize: 12,
                                 fontWeight: FontWeight.normal),
                           )
@@ -81,31 +93,21 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Hi Jackie",
+                          "Hi ${userProvider.user?.firstName}",
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w900,
-                            color: Color(0XFF343E87),
+                            color: Colors.white,
                           ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         Text(
-                          "Here is a list of schedule",
+                          "This is your day today",
                           style: TextStyle(
                             fontSize: 13,
-                            color: Colors.blueGrey,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "You need to check...",
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.blueGrey,
+                            color: Colors.white70,
                           ),
                         ),
                       ],
@@ -127,12 +129,26 @@ class HomeScreen extends StatelessWidget {
               ),
               child: ListView(
                 children: [
-                  buildTitleRow("TODAY CLASSES", 3),
+                  buildTitleRow("TODAY's CLASSES", 3),
                   SizedBox(
                     height: 20,
                   ),
-                  buildClassItem(context),
-                  buildClassItem(context),
+                  if (classProvider.classes.isEmpty)
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                      child: Center(
+                        child: Text(
+                          "No classes today!",
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.normal),
+                        ),
+                      ),
+                    ),
+                  ...classProvider.classes
+                      .where((classModel) => res.containsKey(classModel.period))
+                      .map((classModel) => buildClassItem(context, classModel))
+                      .toList(),
                   SizedBox(
                     height: 25,
                   ),
@@ -263,7 +279,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Container buildClassItem(BuildContext context) {
+  Container buildClassItem(BuildContext context, Class classData) {
+    var res = DateTimeUtils.periodToTimestamp();
     return Container(
       margin: EdgeInsets.only(bottom: 15),
       padding: EdgeInsets.all(10),
@@ -279,14 +296,14 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "07:00",
+                res[classData.period]?["time"] ?? "",
                 style: TextStyle(
                     fontWeight: FontWeight.w900,
                     color: Colors.grey.shade700,
                     fontSize: 13),
               ),
               Text(
-                "AM",
+                res[classData.period]?["ampm"] ?? "",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
@@ -306,8 +323,8 @@ class HomeScreen extends StatelessWidget {
             children: [
               Container(
                 width: MediaQuery.of(context).size.width - 160,
-                child: const Text(
-                  "The Basic of Typography II",
+                child: Text(
+                  classData.subject,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontWeight: FontWeight.normal,
@@ -329,7 +346,7 @@ class HomeScreen extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width - 160,
                     child: Text(
-                      "Room C1, Faculty of Art & Design Building",
+                      classData.room.name,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.grey,
@@ -343,15 +360,14 @@ class HomeScreen extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80"),
+                    child: Icon(Icons.person),
                     radius: 10,
                   ),
                   SizedBox(
                     width: 5,
                   ),
                   Text(
-                    "Gabriel Sutton",
+                    classData.teacherName,
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 13,
