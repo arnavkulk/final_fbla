@@ -20,7 +20,6 @@ class RootScreen extends StatelessWidget {
     _initialized = true;
     AuthProvider provider = Provider.of<AuthProvider>(context, listen: false);
     SchedulerBinding.instance!.addPostFrameCallback((_) {
-      print(provider.user);
       if (provider.isAuthenticated) {
         context.beamToNamed(HomeScreen.route);
       } else if (!provider.isLoggedIn) {

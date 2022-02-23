@@ -20,7 +20,6 @@ class _CalendarState extends State<Calendar> {
   @override
   void initState() {
     super.initState();
-    _selectedDate = _selectedDate.add(Duration(days: 1));
   }
 
   List<Widget> buildTop() {
@@ -67,6 +66,8 @@ class _CalendarState extends State<Calendar> {
     List<Class> todaysClasses = classProvider.classes
         .where((classModel) => res.containsKey(classModel.period))
         .toList();
+    todaysClasses.sort((a, b) => a.period.compareTo(b.period));
+
     return Screen(
       top: false,
       bottom: false,

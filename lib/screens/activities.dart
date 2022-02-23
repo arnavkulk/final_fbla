@@ -57,7 +57,6 @@ class _ActivitiesState extends State<Activities> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     ActivityProvider activityProvider = Provider.of<ActivityProvider>(context);
-    print(activityProvider.activities.length);
     Activity? activityOfTheDay = activityProvider.activities.length > 0
         ? activityProvider.activities[0]
         : null;
@@ -233,12 +232,8 @@ class _ActivitiesState extends State<Activities> {
                       .user!
                       .activityIds
                       .contains(activity.id)) {
-                    print('add');
-
                     UserService.addActivity(uid, activity.id);
                   } else {
-                    print('remove');
-
                     UserService.removeActivity(uid, activity.id);
                   }
                 },
@@ -406,12 +401,8 @@ class ActivityCard extends StatelessWidget {
                                 .user!
                                 .activityIds
                                 .contains(activity.id)) {
-                              print('add');
-
                               UserService.addActivity(uid, activity.id);
                             } else {
-                              print('remove');
-
                               UserService.removeActivity(uid, activity.id);
                             }
                           },

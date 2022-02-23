@@ -16,12 +16,10 @@ class ActivityProvider extends ChangeNotifier {
   List<StreamSubscription> _subscriptions = [];
 
   void setUpStream() async {
-    print('start');
     StreamSubscription sub = Collections.activitiesCollection
         // .where(FieldPath.documentId, whereIn: activityIds)
         .snapshots()
         .listen((snapshot) {
-      print('listen');
       _activities = snapshot.docs.map((e) => e.data()).toList();
 
       notifyListeners();
@@ -55,7 +53,6 @@ class ActivityProvider extends ChangeNotifier {
   }
 
   void clear() {
-    print('clear');
     _activities = [];
     cancelListeners();
     notifyListeners();

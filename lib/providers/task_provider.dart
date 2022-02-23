@@ -14,13 +14,11 @@ class TaskProvider extends ChangeNotifier {
   List<StreamSubscription> _subscriptions = [];
 
   void setUpStream(List<String> classIds) async {
-    print('start');
     StreamSubscription sub = Collections.tasksCollection
         .orderBy('deadline')
         // .where('classId', whereIn: classIds)
         .snapshots()
         .listen((snapshot) {
-      print('listen: ${snapshot.docs.length}');
       _tasks = snapshot.docs.map((e) => e.data()).toList();
       notifyListeners();
     });
@@ -53,7 +51,6 @@ class TaskProvider extends ChangeNotifier {
   }
 
   void clear() {
-    print('clear');
     _tasks = [];
     cancelListeners();
     notifyListeners();

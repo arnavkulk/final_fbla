@@ -15,12 +15,10 @@ class ClassProvider extends ChangeNotifier {
   List<StreamSubscription> _subscriptions = [];
 
   void setUpStream(List<String> classIds) async {
-    print('start');
     StreamSubscription sub = Collections.classesCollection
         .where(FieldPath.documentId, whereIn: classIds)
         .snapshots()
         .listen((snapshot) {
-      print('listen');
       _classes = snapshot.docs.map((e) => e.data()).toList();
       notifyListeners();
     });
@@ -53,7 +51,6 @@ class ClassProvider extends ChangeNotifier {
   }
 
   void clear() {
-    print('clear');
     _classes = [];
     cancelListeners();
     notifyListeners();

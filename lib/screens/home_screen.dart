@@ -27,6 +27,7 @@ class HomeScreen extends StatelessWidget {
     List<Class> todaysClasses = classProvider.classes
         .where((classModel) => res.containsKey(classModel.period))
         .toList();
+    todaysClasses.sort((a, b) => a.period.compareTo(b.period));
     return Screen(
       top: false,
       bottom: false,
@@ -88,9 +89,10 @@ class HomeScreen extends StatelessWidget {
                         ],
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(Provider.of<AuthProvider>(context)
-                                  .user
-                                  ?.photoURL ??
+                          image: NetworkImage(
+                              // Provider.of<AuthProvider>(context)
+                              //       .user
+                              //       ?.photoURL ??
                               ""),
                           // "https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80"),
                         ),

@@ -48,7 +48,6 @@ class UserProvider extends ChangeNotifier {
   }
 
   void clear() {
-    print('clear');
     _user = null;
     cancelListeners();
     notifyListeners();

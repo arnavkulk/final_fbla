@@ -16,6 +16,5 @@ class StyleConstants {
     width = _mediaQueryData!.size.width -
         (_mediaQueryData!.padding.left + _mediaQueryData!.padding.right);
     initialized = true;
-    print('height: ' + height.toString() + ' width: ' + width.toString());
   }
 }
