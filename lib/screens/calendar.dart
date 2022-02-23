@@ -256,16 +256,9 @@ class _CalendarState extends State<Calendar> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.green.shade600,
-                      child: Center(
-                        child: Icon(
-                          Icons.person,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                      ),
-                      radius: 20,
+                    Icon(
+                      Icons.person,
+                      size: 40,
                     ),
                     SizedBox(
                       width: 10,
@@ -284,26 +277,54 @@ class _CalendarState extends State<Calendar> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.green.shade600,
-                      child: Center(
-                        child: Icon(
-                          Icons.location_on,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                      ),
-                      radius: 20,
+                    Icon(
+                      Icons.location_on,
+                      size: 40,
                     ),
                     SizedBox(
-                      width: 10,
+                      width: 5,
                     ),
-                    Text(
-                      classModel.room.name,
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Building ${classModel.room.building}",
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Room ${classModel.room.number}, ${classModel.room.number >= 200 ? "2nd" : "1st"} floor",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
+                    // CircleAvatar(
+                    //   backgroundColor: Colors.green.shade600,
+                    //   child: Center(
+                    //     child: Icon(
+                    //       Icons.location_on,
+                    //       size: 30,
+                    //       color: Colors.white,
+                    //     ),
+                    //   ),
+                    //   radius: 20,
+                    // ),
+                    // SizedBox(
+                    //   width: 10,
+                    // ),
+                    // Text(
+                    //   classModel.room.name,
+                    //   style: TextStyle(
+                    //     fontSize: 15,
+                    //   ),
+                    // ),
                   ],
                 )
               ],
