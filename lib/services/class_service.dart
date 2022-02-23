@@ -28,4 +28,14 @@ class ClassService {
         .snapshots()
         .map((event) => event.docs.map((e) => e.data()).toList());
   }
+
+  static Future<String> createClass(Class classModel) async {
+    DocumentReference<Class> doc = _classesCollection.doc();
+    Class newClass = Class.fromJson({
+      ...Class.toJson(classModel),
+      'id': doc.id,
+    });
+    await doc.set(newClass);
+    return doc.id;
+  }
 }

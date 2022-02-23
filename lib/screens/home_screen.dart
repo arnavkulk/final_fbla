@@ -1,9 +1,12 @@
+import 'package:beamer/src/beamer.dart';
 import 'package:final_fbla/constants/constants.dart';
 import 'package:final_fbla/constants/style_constants.dart';
 import 'package:final_fbla/models/class.dart';
 import 'package:final_fbla/providers/auth_provider.dart';
 import 'package:final_fbla/providers/class_provider.dart';
 import 'package:final_fbla/providers/user_provider.dart';
+import 'package:final_fbla/screens/add_class.dart';
+import 'package:final_fbla/screens/screens.dart';
 import 'package:final_fbla/utils/date_time.dart';
 import 'package:final_fbla/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +22,9 @@ class HomeScreen extends StatelessWidget {
     UserProvider userProvider = Provider.of<UserProvider>(context);
     ClassProvider classProvider = Provider.of<ClassProvider>(context);
     var res = DateTimeUtils.periodToTimestamp();
-    print(classProvider.classes);
+    List<Class> todaysClasses = classProvider.classes
+        .where((classModel) => res.containsKey(classModel.period))
+        .toList();
     return Screen(
       top: false,
       bottom: false,
@@ -129,7 +134,8 @@ class HomeScreen extends StatelessWidget {
               ),
               child: ListView(
                 children: [
-                  buildTitleRow("TODAY's CLASSES", 3),
+                  buildTitleRow("TODAY's CLASSES ", todaysClasses.length,
+                      () => context.beamToNamed(AddClass.route)),
                   SizedBox(
                     height: 20,
                   ),
@@ -145,14 +151,13 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ...classProvider.classes
-                      .where((classModel) => res.containsKey(classModel.period))
+                  ...todaysClasses
                       .map((classModel) => buildClassItem(context, classModel))
                       .toList(),
                   SizedBox(
                     height: 25,
                   ),
-                  buildTitleRow("YOUR TASKS", 4),
+                  buildTitleRow("YOUR TASKS", 4, () {}),
                   SizedBox(
                     height: 20,
                   ),
@@ -244,7 +249,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Container buildTitleRow(String title, int number) {
+  Container buildTitleRow(String title, int number, void Function() add) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Row(
@@ -261,18 +266,19 @@ class HomeScreen extends StatelessWidget {
                   TextSpan(
                     text: "($number)",
                     style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.normal),
+                      fontSize: 12,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                 ]),
           ),
-          Text(
-            "See all",
-            style: TextStyle(
-                fontSize: 12,
-                color: Color(0XFF3E3993),
-                fontWeight: FontWeight.bold),
+          IconButton(
+            onPressed: add,
+            icon: Icon(
+              Icons.add_circle_outlined,
+              color: Colors.green.shade600,
+            ),
           )
         ],
       ),
@@ -360,7 +366,14 @@ class HomeScreen extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                    child: Icon(Icons.person),
+                    backgroundColor: Colors.green.shade600,
+                    child: Center(
+                      child: Icon(
+                        Icons.person,
+                        size: 17,
+                        color: Colors.white,
+                      ),
+                    ),
                     radius: 10,
                   ),
                   SizedBox(
