@@ -1,5 +1,10 @@
+import 'package:final_fbla/models/class.dart';
+import 'package:final_fbla/providers/class_provider.dart';
+import 'package:final_fbla/utils/date_time.dart';
 import 'package:final_fbla/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class Calendar extends StatefulWidget {
   static const String route = '/calendar';
@@ -10,8 +15,58 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
+  DateTime _selectedDate = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = _selectedDate.add(Duration(days: 1));
+  }
+
+  List<Widget> buildTop() {
+    List<Widget> ret = [];
+
+    DateTime min =
+        _selectedDate.subtract(Duration(days: _selectedDate.weekday - 1));
+    DateTime current = min;
+    for (int i = 0; i < 7; i++) {
+      ret.add(buildDateColumn(
+          DateTime.fromMillisecondsSinceEpoch(current.millisecondsSinceEpoch)));
+      current = current.add(Duration(days: 1));
+    }
+    return ret;
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2021, 8),
+      lastDate: DateTime(2022, 7),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: Colors.green.shade400,
+            colorScheme: ColorScheme.light(primary: Colors.green.shade400),
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedDate = picked;
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
+    ClassProvider classProvider = Provider.of<ClassProvider>(context);
+    var res = DateTimeUtils.periodToTimestamp(date: _selectedDate);
+    List<Class> todaysClasses = classProvider.classes
+        .where((classModel) => res.containsKey(classModel.period))
+        .toList();
     return Screen(
       top: false,
       bottom: false,
@@ -20,28 +75,34 @@ class _CalendarState extends State<Calendar> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
             alignment: Alignment.topCenter,
-            color: Color(0xFFF0F0F0),
+            color: Colors.green.shade600,
             height: MediaQuery.of(context).size.height,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    Icon(Icons.calendar_today, color: Colors.grey),
+                    IconButton(
+                      onPressed: () => _selectDate(context),
+                      icon: Icon(
+                        Icons.calendar_today,
+                        color: Colors.white,
+                      ),
+                    ),
                     SizedBox(
                       width: 15,
                     ),
                     RichText(
                       text: TextSpan(
-                          text: "Oct",
+                          text: DateFormat.MMM().format(_selectedDate),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color(0XFF263064),
+                            color: Colors.white,
                             fontSize: 22,
                           ),
                           children: [
                             TextSpan(
-                              text: " 2009",
+                              text: " ${_selectedDate.year}",
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 16,
@@ -51,13 +112,20 @@ class _CalendarState extends State<Calendar> {
                     ),
                   ],
                 ),
-                Text(
-                  "Today",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Color(0XFF3E3993),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedDate = DateTime.now();
+                    });
+                  },
+                  child: Text(
+                    "Today",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -77,24 +145,21 @@ class _CalendarState extends State<Calendar> {
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        buildDateColumn("S", 7, false),
-                        buildDateColumn("M", 8, false),
-                        buildDateColumn("T", 9, false),
-                        buildDateColumn("W", 10, true),
-                        buildDateColumn("T", 11, false),
-                        buildDateColumn("F", 12, false),
-                        buildDateColumn("S", 13, false),
-                      ],
+                      children: buildTop(),
                     ),
                   ),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
+                        mainAxisAlignment: todaysClasses.isEmpty
+                            ? MainAxisAlignment.center
+                            : MainAxisAlignment.start,
                         children: [
-                          buildTaskListItem(),
-                          buildTaskListItem(),
-                          buildTaskListItem(),
+                          if (todaysClasses.isEmpty)
+                            Container(
+                              child: Text("No School!"),
+                            ),
+                          ...todaysClasses.map((c) => buildTaskListItem(c))
                         ],
                       ),
                     ),
@@ -108,7 +173,8 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  Container buildTaskListItem() {
+  Container buildTaskListItem(Class classModel) {
+    var res = DateTimeUtils.periodToTimestamp(date: _selectedDate);
     return Container(
       margin: EdgeInsets.only(bottom: 25),
       child: Column(
@@ -134,14 +200,14 @@ class _CalendarState extends State<Calendar> {
                   children: [
                     RichText(
                       text: TextSpan(
-                          text: "07:00",
+                          text: res[classModel.period]?["time"],
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
                           children: [
                             TextSpan(
-                              text: " AM",
+                              text: " ${res[classModel.period]?["ampm"]}",
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 color: Colors.grey,
@@ -150,7 +216,7 @@ class _CalendarState extends State<Calendar> {
                           ]),
                     ),
                     Text(
-                      "1 h 45 min",
+                      _selectedDate.weekday == 3 ? "1 hour" : "1h 30 min",
                       style: TextStyle(
                         color: Colors.grey,
                       ),
@@ -178,93 +244,66 @@ class _CalendarState extends State<Calendar> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Typography",
+                  classModel.subject,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),
                 ),
                 SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  "The Basic of Typography I",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
-                  ),
-                ),
-                SizedBox(
                   height: 15,
                 ),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CircleAvatar(
-                      radius: 9,
-                      backgroundImage: NetworkImage(
-                          "https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80"),
+                      backgroundColor: Colors.green.shade600,
+                      child: Center(
+                        child: Icon(
+                          Icons.person,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
+                      radius: 20,
                     ),
                     SizedBox(
-                      width: 5,
+                      width: 10,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Gabriel Sutton",
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "722-085-9210",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    )
+                    Text(
+                      classModel.teacherName,
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(
                   height: 15,
                 ),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.location_on,
-                      size: 20,
+                    CircleAvatar(
+                      backgroundColor: Colors.green.shade600,
+                      child: Center(
+                        child: Icon(
+                          Icons.location_on,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
+                      radius: 20,
                     ),
                     SizedBox(
-                      width: 5,
+                      width: 10,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Faculty of Art & Design Building",
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "Room C1, 1st floor",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    )
+                    Text(
+                      classModel.room.name,
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
                   ],
                 )
               ],
@@ -275,28 +314,40 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  Container buildDateColumn(String weekDay, int date, bool isActive) {
-    return Container(
-      decoration: isActive
-          ? BoxDecoration(
-              color: Color(0xff402fcc), borderRadius: BorderRadius.circular(10))
-          : BoxDecoration(),
-      height: 55,
-      width: 35,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            weekDay,
-            style: TextStyle(color: Colors.grey, fontSize: 11),
-          ),
-          Text(
-            date.toString(),
-            style: TextStyle(
-                color: isActive ? Colors.white : Colors.black,
-                fontWeight: FontWeight.bold),
-          ),
-        ],
+  Widget buildDateColumn(
+    DateTime date,
+  ) {
+    bool isActive = date.day == _selectedDate.day;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedDate = date;
+        });
+      },
+      child: Container(
+        decoration: isActive
+            ? BoxDecoration(
+                color: Colors.green.shade800,
+                borderRadius: BorderRadius.circular(10))
+            : BoxDecoration(),
+        height: 55,
+        width: 35,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              DateFormat.E().format(date)[0],
+              style: TextStyle(color: Colors.grey, fontSize: 11),
+            ),
+            Text(
+              date.day.toString(),
+              style: TextStyle(
+                  color: isActive ? Colors.white : Colors.black,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       ),
     );
   }

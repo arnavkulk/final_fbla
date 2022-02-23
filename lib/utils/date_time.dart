@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DateTimeUtils {
-  static Map<int, Map<String, String>> periodToTimestamp() {
-    DateTime today = DateTime.now();
+  static Map<int, Map<String, String>> periodToTimestamp({DateTime? date}) {
+    DateTime today = date ?? DateTime.now();
     if (today.weekday == 1 || today.weekday == 4) {
       return {
         1: {

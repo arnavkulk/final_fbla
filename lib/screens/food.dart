@@ -88,8 +88,8 @@ class _FoodState extends State<Food> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildSection("Brunches", brunches),
-                buildSection("Lunches", lunches),
+                buildSection("Brunch", brunches),
+                buildSection("Lunch", lunches),
                 buildSection("Snacks", snacks),
                 buildSection("Drinks", drinks)
               ],
