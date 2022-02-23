@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Activity {
   final String id;
   final String name;
-  final int members;
+  final List<String> members;
   final String description;
   final String image;
 
@@ -32,7 +32,7 @@ class Activity {
       name: data['name'] as String,
       image: data['image'] as String,
       description: data['description'] as String,
-      members: data['members'] as int,
+      members: (data['members'] as List<dynamic>).cast<String>(),
     );
   }
 

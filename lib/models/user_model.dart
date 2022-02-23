@@ -43,7 +43,7 @@ class UserModel {
       fcmToken: data['fcmToken'] as String,
       classIds: data['classIds'].map<String>((e) => e.toString()).toList()
           as List<String>,
-      activityIds: data['classIds'].map<String>((e) => e.toString()).toList()
+      activityIds: data['activityIds'].map<String>((e) => e.toString()).toList()
           as List<String>,
       userType: UserTypeUtils.fromString(data['userType']),
     );
@@ -59,6 +59,7 @@ class UserModel {
       'fcmToken': object.fcmToken,
       'classIds': object.classIds,
       'userType': object.userType.value,
+      'activityIds': object.activityIds,
     };
   }
 }

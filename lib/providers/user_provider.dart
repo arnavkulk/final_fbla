@@ -17,7 +17,8 @@ class UserProvider extends ChangeNotifier {
     print('start');
     StreamSubscription sub =
         Collections.usersCollection.doc(uid).snapshots().listen((snapshot) {
-      print('listen');
+      print('listen: ${snapshot.data()?.activityIds}');
+
       _user = snapshot.data();
       notifyListeners();
     });

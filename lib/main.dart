@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_fbla/constants/app_constants.dart';
+import 'package:final_fbla/providers/activity_provider.dart';
 import 'package:final_fbla/providers/class_provider.dart';
 import 'package:final_fbla/providers/providers.dart';
 import 'package:final_fbla/providers/task_provider.dart';
@@ -112,6 +113,22 @@ class MyApp extends StatelessWidget {
               return classProvider..loadClasses(classIds);
             }
             return classProvider;
+          },
+        ),
+        ChangeNotifierProxyProvider<UserProvider, ActivityProvider>(
+          create: (context) => ActivityProvider(),
+          update: (BuildContext context, UserProvider userProvider,
+              ActivityProvider? activityProvider) {
+            if (activityProvider == null) {
+              return ActivityProvider();
+            }
+            List<String> activityIds = userProvider.user?.activityIds ?? [];
+
+            if (!ListEquality().equals(activityIds,
+                activityProvider.activities.map((e) => e.id).toList())) {
+              return activityProvider..loadActivities(activityIds);
+            }
+            return activityProvider;
           },
         ),
       ],
