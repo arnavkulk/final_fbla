@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_fbla/constants/app_constants.dart';
 import 'package:final_fbla/providers/class_provider.dart';
 import 'package:final_fbla/providers/providers.dart';
+import 'package:final_fbla/providers/task_provider.dart';
 import 'package:final_fbla/providers/user_provider.dart';
 import 'package:final_fbla/screens/onboarding/handle_verification.dart';
 import 'package:final_fbla/screens/onboarding/verify_email.dart';
@@ -81,6 +82,22 @@ class MyApp extends StatelessWidget {
             }
           },
         ),
+        ChangeNotifierProxyProvider<UserProvider, TaskProvider>(
+          create: (context) => TaskProvider(),
+          update: (BuildContext context, UserProvider userProvider,
+              TaskProvider? taskProvider) {
+            if (taskProvider == null) {
+              return TaskProvider();
+            }
+            List<String> classIds = userProvider.user?.classIds ?? [];
+
+            if (!ListEquality().equals(
+                classIds, taskProvider.tasks.map((e) => e.classId).toList())) {
+              return taskProvider..loadTasks(classIds);
+            }
+            return taskProvider;
+          },
+        ),
         ChangeNotifierProxyProvider<UserProvider, ClassProvider>(
           create: (context) => ClassProvider(),
           update: (BuildContext context, UserProvider userProvider,
@@ -96,7 +113,7 @@ class MyApp extends StatelessWidget {
             }
             return classProvider;
           },
-        )
+        ),
       ],
       child: MaterialApp.router(
         routeInformationParser: BeamerParser(),
