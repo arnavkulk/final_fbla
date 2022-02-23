@@ -9,6 +9,7 @@ import 'package:final_fbla/providers/task_provider.dart';
 import 'package:final_fbla/providers/user_provider.dart';
 import 'package:final_fbla/screens/add_class.dart';
 import 'package:final_fbla/screens/screens.dart';
+import 'package:final_fbla/services/auth_service.dart';
 import 'package:final_fbla/utils/date_time.dart';
 import 'package:final_fbla/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -74,23 +75,28 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(width: 1, color: Colors.white),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.blueGrey.withOpacity(0.2),
-                            blurRadius: 12,
-                            spreadRadius: 8,
-                          )
-                        ],
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                              "https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80"),
+                    GestureDetector(
+                      onTap: () {
+                        AuthService.logout();
+                        context.beamToNamed(Login.route);
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(width: 1, color: Colors.white),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blueGrey.withOpacity(0.2),
+                              blurRadius: 12,
+                              spreadRadius: 8,
+                            )
+                          ],
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/logo.png'),
+                          ),
                         ),
                       ),
                     ),
