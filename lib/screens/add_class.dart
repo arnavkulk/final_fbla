@@ -47,6 +47,8 @@ class _AddClassState extends State<AddClass> {
     _teacherName.dispose();
     _period.dispose();
     _description.dispose();
+    _building.dispose();
+    _roomNumber.dispose();
   }
 
   Future<void> createClass(BuildContext context) async {
