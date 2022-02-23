@@ -20,6 +20,8 @@ class RootScreen extends StatelessWidget {
     _initialized = true;
     AuthProvider provider = Provider.of<AuthProvider>(context, listen: false);
     SchedulerBinding.instance!.addPostFrameCallback((_) {
+      FlutterNativeSplash.remove();
+
       if (provider.isAuthenticated) {
         context.beamToNamed(HomeScreen.route);
       } else if (!provider.isLoggedIn) {

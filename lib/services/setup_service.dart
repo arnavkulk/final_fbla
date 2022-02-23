@@ -12,7 +12,6 @@ class SetupService {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    FlutterNativeSplash.remove();
 
     // await FirebaseFirestore.instance.enablePersistence();
   }
