@@ -19,17 +19,24 @@ class RootScreen extends StatelessWidget {
   void init(BuildContext context) {
     _initialized = true;
     AuthProvider provider = Provider.of<AuthProvider>(context, listen: false);
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
-      FlutterNativeSplash.remove();
-
-      if (provider.isAuthenticated) {
-        context.beamToNamed(HomeScreen.route);
-      } else if (!provider.isLoggedIn) {
+    if (provider.user != null && !provider.user!.emailVerified) {
+      AuthService.logout().then((value) {
+        FlutterNativeSplash.remove();
         context.beamToNamed(Login.route);
-      } else {
-        context.beamToNamed(VerifyEmail.route);
-      }
-    });
+      });
+    } else {
+      SchedulerBinding.instance!.addPostFrameCallback((_) {
+        FlutterNativeSplash.remove();
+
+        if (provider.isAuthenticated) {
+          context.beamToNamed(HomeScreen.route);
+        } else if (!provider.isLoggedIn) {
+          context.beamToNamed(Login.route);
+        } else {
+          context.beamToNamed(VerifyEmail.route);
+        }
+      });
+    }
   }
 
   @override

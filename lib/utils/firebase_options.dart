@@ -61,7 +61,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '928550275862',
     projectId: 'final-fbla',
     storageBucket: 'final-fbla.appspot.com',
-    iosClientId: '928550275862-96vddbg6qmdh1h6d6lrg8iqefn6tkoc3.apps.googleusercontent.com',
-    iosBundleId: 'com.example.finalFbla',
+    iosClientId:
+        '928550275862-96vddbg6qmdh1h6d6lrg8iqefn6tkoc3.apps.googleusercontent.com',
+    iosBundleId: 'com.example.finalFbla0',
   );
 }
