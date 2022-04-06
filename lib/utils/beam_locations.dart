@@ -11,6 +11,7 @@ import 'package:final_fbla/screens/onboarding/handle_verification.dart';
 import 'package:final_fbla/screens/onboarding/login.dart';
 import 'package:final_fbla/screens/onboarding/register.dart';
 import 'package:final_fbla/screens/onboarding/verify_email.dart';
+import 'package:final_fbla/screens/report_bug.dart';
 import 'package:final_fbla/screens/root_screen.dart';
 import 'package:final_fbla/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -186,6 +187,18 @@ class HomeLocation extends BeamLocation<BeamState> {
         ),
       );
     }
+
+    if (location.contains(ReportBug.route.replaceAll("/", ""))) {
+      pagesStack.add(
+        const BeamPage(
+          key: ValueKey(ReportBug.route),
+          name: ReportBug.route,
+          type: BeamPageType.noTransition,
+          child: ReportBug(),
+        ),
+      );
+    }
+
     return pagesStack;
   }
 
@@ -197,5 +210,6 @@ class HomeLocation extends BeamLocation<BeamState> {
         AddClass.route,
         Food.route,
         Contact.route,
+        ReportBug.route,
       ];
 }
