@@ -54,10 +54,12 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> signInWithFacebook(BuildContext context) async {
+    return;
     context.beamToNamed(HomeScreen.route);
   }
 
   Future<void> signInWithGoogle(BuildContext context) async {
+    return;
     try {
       UserCredential cred = await AuthService.loginWithGoogle();
       UserModel model = await AuthService.getUser(cred.user!.uid);
