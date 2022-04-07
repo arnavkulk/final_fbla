@@ -8,6 +8,7 @@ import 'package:final_fbla/providers/class_provider.dart';
 import 'package:final_fbla/providers/task_provider.dart';
 import 'package:final_fbla/providers/user_provider.dart';
 import 'package:final_fbla/screens/add_class.dart';
+import 'package:final_fbla/screens/report_bug.dart';
 import 'package:final_fbla/screens/screens.dart';
 import 'package:final_fbla/services/auth_service.dart';
 import 'package:final_fbla/utils/date_time.dart';
@@ -48,26 +49,39 @@ class HomeScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 30, vertical: 90),
             child: Column(
               children: [
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: RichText(
-                    text: TextSpan(
-                        text: DateFormat.E().format(DateTime.now()),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w900),
-                        children: [
-                          TextSpan(
-                            text:
-                                " ${DateTime.now().day} ${DateFormat.MMM().format(DateTime.now())}",
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: RichText(
+                        text: TextSpan(
+                            text: DateFormat.E().format(DateTime.now()),
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
-                                fontWeight: FontWeight.normal),
-                          )
-                        ]),
-                  ),
+                                fontWeight: FontWeight.w900),
+                            children: [
+                              TextSpan(
+                                text:
+                                    " ${DateTime.now().day} ${DateFormat.MMM().format(DateTime.now())}",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.normal),
+                              )
+                            ]),
+                      ),
+                    ),
+                    Container(
+                        child: IconButton(
+                      onPressed: () => context.beamToNamed(ReportBug.route),
+                      icon: Icon(
+                        Icons.settings,
+                        color: Colors.white,
+                      ),
+                    ))
+                  ],
                 ),
                 SizedBox(
                   height: 15,

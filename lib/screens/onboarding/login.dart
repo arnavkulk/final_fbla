@@ -451,7 +451,7 @@ class _LoginState extends State<Login> {
                   ),
                   SocialButton(
                       onPressed: () => signInWithGoogle(context),
-                      icon: Image.asset('assets/google.jpg')),
+                      icon: Image.asset('assets/google.png')),
                 ],
               ),
             ),
