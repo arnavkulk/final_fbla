@@ -25,7 +25,7 @@ class RootScreen extends StatelessWidget {
         context.beamToNamed(Login.route);
       });
     } else {
-      SchedulerBinding.instance!.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         FlutterNativeSplash.remove();
 
         if (provider.isAuthenticated) {
@@ -33,7 +33,7 @@ class RootScreen extends StatelessWidget {
         } else if (!provider.isLoggedIn) {
           context.beamToNamed(Login.route);
         } else {
-          context.beamToNamed(VerifyEmail.route);
+          context.beamToNamed(Login.route);
         }
       });
     }

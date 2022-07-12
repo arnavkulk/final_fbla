@@ -23,16 +23,16 @@ class _VerifyEmailState extends State<VerifyEmail> {
   @override
   void initState() {
     super.initState();
-    // AuthService.currentUser?.sendEmailVerification();
-    // Future(() async {
-    //   _timer = Timer.periodic(Duration(seconds: 1), (timer) async {
-    //     await AuthService.currentUser?.reload();
-    //     if (AuthService.currentUser?.emailVerified ?? false) {
-    //       context.beamToNamed(HomeScreen.route);
-    //     }
-    //     timer.cancel();
-    //   });
-    // });
+    AuthService.currentUser?.sendEmailVerification();
+    Future(() async {
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) async {
+        await AuthService.currentUser?.reload();
+        if (AuthService.currentUser?.emailVerified ?? false) {
+          context.beamToNamed(HomeScreen.route);
+        }
+        timer.cancel();
+      });
+    });
   }
 
   @override
@@ -44,10 +44,10 @@ class _VerifyEmailState extends State<VerifyEmail> {
   }
 
   void refresh() async {
-    await AuthService.currentUser?.reload();
-    if (AuthService.currentUser?.emailVerified ?? false) {
-      context.beamToNamed(HomeScreen.route);
-    }
+    // await AuthService.currentUser?.reload();
+    // if (AuthService.currentUser?.emailVerified ?? false) {
+    context.beamToNamed(HomeScreen.route);
+    // }
   }
 
   Future<void> sendVerificationEmail() async {
@@ -55,7 +55,13 @@ class _VerifyEmailState extends State<VerifyEmail> {
       _buttonText = "Sending Email";
       _isLoading = true;
     });
-    await AuthService.currentUser?.sendEmailVerification();
+    await AuthService.currentUser?.sendEmailVerification().then((value) {
+      print('SUCCESS!!');
+    }).catchError((err) {
+      print('EROORRR YOURE GONNA LOSE');
+
+      print(err);
+    });
     setState(() {
       _buttonText = "Email Sent";
       _isLoading = false;

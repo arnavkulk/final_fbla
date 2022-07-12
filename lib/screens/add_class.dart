@@ -95,7 +95,6 @@ class _AddClassState extends State<AddClass> {
       top: false,
       bottom: false,
       includeHeader: false,
-      includeBottomNav: false,
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

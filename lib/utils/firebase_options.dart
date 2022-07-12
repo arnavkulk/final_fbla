@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'final-fbla.appspot.com',
     iosClientId:
         '928550275862-96vddbg6qmdh1h6d6lrg8iqefn6tkoc3.apps.googleusercontent.com',
-    iosBundleId: 'com.example.finalFbla',
+    iosBundleId: 'com.example.finalFbla0',
   );
 }
